@@ -66,7 +66,7 @@ public class PieChartRenderer: ChartDataRendererBase
         var entries = dataSet.yVals
         var drawAngles = _chart.drawAngles
         let circleBox = _chart.circleBox
-        let radius = _chart.radius
+        var radius = _chart.radius
         let innerRadius = drawHoleEnabled && holeTransparent ? radius * holeRadiusPercent : 0.0
         
         CGContextSaveGState(context)
@@ -92,6 +92,10 @@ public class PieChartRenderer: ChartDataRendererBase
                         sweepAngle = 0.0
                     }
                     let endAngle = startAngle + sweepAngle
+                    
+                    if let radiusRatio = e.data as? Double {
+                        radius = _chart.radius * CGFloat(radiusRatio)
+                    }
                     
                     let path = CGPathCreateMutable()
                     CGPathMoveToPoint(path, nil, circleBox.midX, circleBox.midY)
